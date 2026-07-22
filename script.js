@@ -27,7 +27,7 @@ function openProject(index) {
   document.querySelector('#dialog-description').textContent = p.description;
   const media = document.querySelector('#dialog-media');
   const embed = p.src && getEmbed(p.src);
-  media.innerHTML = embed || (p.src ? `<video controls autoplay playsinline src="${p.src}"></video>` : `<img src="${p.cover}" alt="${p.title}" />`);
+  media.innerHTML = embed || (p.src ? `<video controls playsinline preload="metadata" poster="${p.cover}" src="${p.src}"></video>` : `<img src="${p.cover}" alt="${p.title}" />`);
   const link = document.querySelector('#watch-link');
   link.href = p.src || '#'; link.style.display = p.src ? 'inline-flex' : 'none';
   dialog.showModal();
