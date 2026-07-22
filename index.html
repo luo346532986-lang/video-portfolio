@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="experience.css?v=20260722-v3" />
+    <link rel="stylesheet" href="experience.css?v=20260722-v4" />
   </head>
   <body>
     <header class="site-header">
@@ -29,24 +29,33 @@
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy reveal">
-          <p class="kicker">AIGC PRODUCT VIDEO DESIGNER · GUANGZHOU</p>
-          <h1 id="hero-title"><span>让产品</span><em>被看见</em><span>更被记住</span></h1>
-          <p class="hero-intro">从商业洞察、脚本与视觉，到实拍、后期和 AI 工作流——把复杂卖点，变成一眼能懂的内容。</p>
-          <a class="round-link" href="#selected" aria-label="查看代表案例">↓</a>
+        <div class="hero-gallery" aria-label="代表项目封面组合">
+          <figure class="orbit-card orbit-1"><img src="covers/wind-film.jpg?v=20260720-wind3" alt="把风夹在身边视频封面" /></figure>
+          <figure class="orbit-card orbit-2"><img src="covers/domira-oven.jpg?v=20260720-domira3" alt="多米拉 S1 烤箱视频封面" /></figure>
+          <figure class="orbit-card orbit-3"><img src="covers/spring-campus-film.jpg?v=20260721-campus-cover" alt="AI 校园宣传片视频封面" /></figure>
+          <figure class="orbit-card orbit-4"><img src="covers/home-cooking-story.jpg?v=20260721-mother-cover" alt="母亲节情绪氛围短片视频封面" /></figure>
+          <figure class="orbit-card orbit-5"><img src="covers/richluck-brand-film.jpg?v=20260720-richluck3" alt="Rich Luck 商厨品牌片视频封面" /></figure>
+          <figure class="orbit-card orbit-6"><img src="covers/claw-machine-store-film.jpg?v=20260720-claw4" alt="抓娃娃店活动短片视频封面" /></figure>
+          <figure class="orbit-card orbit-7"><img src="covers/rousong-xiaobei.jpg?v=20260720-rousong3" alt="肉松小贝制作视频封面" /></figure>
+          <a class="hero-core" href="#selected"><strong>LX</strong><span>VIEW WORK</span></a>
         </div>
-        <figure class="hero-visual reveal">
-          <img src="covers/ai-cycling-glasses.jpg?v=20260720-cycling3" alt="AI 骑行智能眼镜概念片封面" />
-          <figcaption><span>FEATURED / 2026</span><span>AIGC × PRODUCT × STORY</span></figcaption>
-        </figure>
-        <div class="hero-proof reveal" aria-label="核心价值">
-          <p><b>INSIGHT</b><span>先理解生意，<br />再开始设计。</span></p>
-          <p><b>VISUAL</b><span>让信息清晰，<br />也让画面有记忆。</span></p>
-          <p><b>SYSTEM</b><span>从一条成片，<br />沉淀可复用流程。</span></p>
+
+        <div class="hero-statement reveal">
+          <p class="kicker">YOUR PRODUCT BROUGHT TO LIFE</p>
+          <h1 id="hero-title"><span>让产品被看见</span><em>更被记住</em></h1>
         </div>
+
+        <aside class="hero-card reveal">
+          <div class="hero-card-mark">LX</div>
+          <p>从商业洞察与视觉设计，到实拍、后期和 AI 内容生产。</p>
+          <a href="#selected">查看代表案例 <span>↗</span></a>
+        </aside>
+
+        <small class="hero-year">© 2026 LENNOX</small>
+        <a class="hero-scroll" href="#method">SCROLL DOWN ↓</a>
       </section>
 
-      <section class="manifesto" aria-labelledby="manifesto-title">
+      <section class="manifesto" id="method" aria-labelledby="manifesto-title">
         <p class="section-index">01 / HOW I THINK</p>
         <h2 id="manifesto-title" class="reveal">不只把视频做漂亮<br />更让内容替产品<span>解决问题</span></h2>
         <div class="manifesto-flow reveal">
@@ -70,10 +79,10 @@
           <p>每一个项目都有独立的制作思路与交付说明。点击封面查看完整案例。</p>
         </header>
         <div class="filter-row" role="group" aria-label="按制作方式筛选">
-          <button class="filter active" data-filter="all">全部 <sup id="count-all">8</sup></button>
-          <button class="filter" data-filter="AIGC">AIGC</button>
-          <button class="filter" data-filter="实拍">实拍</button>
-          <button class="filter" data-filter="实拍结合 AI">实拍结合 AI</button>
+          <button class="filter active" data-filter="all" aria-pressed="true">全部 <sup id="count-all">8</sup></button>
+          <button class="filter" data-filter="AIGC" aria-pressed="false">AIGC</button>
+          <button class="filter" data-filter="实拍" aria-pressed="false">实拍</button>
+          <button class="filter" data-filter="实拍结合 AI" aria-pressed="false">实拍结合 AI</button>
         </div>
         <div class="archive-grid" id="archive-grid" aria-live="polite"></div>
         <p class="empty-state" id="empty-state" hidden>此分类暂无案例。</p>
@@ -127,6 +136,6 @@
     </dialog>
 
     <script src="projects.js?v=20260721-covers2"></script>
-    <script src="script.js?v=20260722-v3"></script>
+    <script src="script.js?v=20260722-v4"></script>
   </body>
 </html>

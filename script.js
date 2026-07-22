@@ -87,7 +87,11 @@ function renderArchive(filter = "all") {
 }
 
 filters.forEach((button) => button.addEventListener("click", () => {
-  filters.forEach((item) => item.classList.toggle("active", item === button));
+  filters.forEach((item) => {
+    const isActive = item === button;
+    item.classList.toggle("active", isActive);
+    item.setAttribute("aria-pressed", String(isActive));
+  });
   renderArchive(button.dataset.filter);
 }));
 
