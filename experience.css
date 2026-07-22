@@ -56,9 +56,14 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible { outline: 
 .hero-statement { position: absolute; z-index: 4; left: 34px; bottom: 36px; max-width: 760px; }
 .hero-statement h1 { margin: 24px 0 0; display: grid; gap: 8px; font-size: clamp(58px, 6.3vw, 102px); line-height: .94; letter-spacing: -.07em; font-weight: 700; }
 .hero-statement h1 em { font-family: var(--sans); font-size: .84em; font-style: normal; font-weight: 600; color: #92928e; letter-spacing: -.055em; }
+.hero-positioning { margin: 20px 0 0; display: grid; gap: 7px; font-size: clamp(15px, 1.35vw, 20px); line-height: 1.5; font-weight: 600; letter-spacing: -.025em; }
+.hero-positioning span { color: var(--muted); font: 500 11px/1.6 var(--mono); letter-spacing: .035em; }
 .hero-card { position: absolute; z-index: 4; right: 34px; bottom: 36px; width: 292px; min-height: 245px; padding: 24px; display: grid; grid-template-rows: 1fr auto auto; border-radius: 30px; background: var(--lime); }
 .hero-card-mark { align-self: start; justify-self: end; display: grid; place-items: center; width: 72px; aspect-ratio: 1; border: 3px solid var(--ink); border-radius: 22px; font-size: 26px; font-weight: 800; letter-spacing: -.08em; }
-.hero-card p { max-width: 225px; margin: 28px 0 20px; font-size: 13px; line-height: 1.75; }
+.hero-card p { max-width: 230px; margin: 20px 0 18px; }
+.hero-card p strong, .hero-card p span { display: block; }
+.hero-card p strong { font-size: 14px; line-height: 1.55; letter-spacing: -.025em; }
+.hero-card p span { margin-top: 7px; color: rgba(17,17,15,.66); font-size: 11px; line-height: 1.6; }
 .hero-card > a { padding: 13px 16px; display: flex; justify-content: space-between; border-radius: 999px; background: var(--ink); color: #fff; font-size: 12px; font-weight: 600; }
 .hero-card > a span { color: var(--lime); }
 .hero-year { position: absolute; z-index: 3; left: 50%; bottom: 25px; transform: translateX(-50%); font: 500 9px/1 var(--mono); }
@@ -101,6 +106,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible { outline: 
 .feature-case p { max-width: 470px; margin: 0; color: rgba(255,255,255,.8); font-size: 15px; line-height: 1.8; }
 .feature-case-foot { margin-top: 30px; display: flex; align-items: center; gap: 14px; }
 .feature-case-foot span { padding: 9px 14px; border: 1px solid rgba(255,255,255,.5); border-radius: 999px; font: 500 10px/1 var(--mono); }
+.feature-case-foot .independent-badge { border-color: var(--lime); color: var(--lime); }
 .feature-case-foot b { display: grid; place-items: center; width: 42px; aspect-ratio: 1; border-radius: 50%; background: var(--lime); color: var(--ink); font-size: 16px; }
 
 .archive { padding: 160px max(5vw, 28px); }
@@ -132,14 +138,35 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible { outline: 
 .about-copy { padding-top: 8px; }
 .about-copy > p { margin: 0 0 24px; font-size: 15px; line-height: 1.9; color: #55534d; }
 .about-copy .about-lead { color: var(--ink); font-size: 21px; line-height: 1.7; font-weight: 600; }
+.about-copy .about-proof { margin-top: 30px; padding: 16px 18px; border-left: 3px solid var(--accent); background: rgba(255,255,255,.42); color: var(--ink); font-weight: 600; }
 .about-copy dl { margin: 48px 0 0; border-top: 1px solid var(--line); }
 .about-copy dl div { padding: 18px 0; display: grid; grid-template-columns: 100px 1fr; gap: 20px; border-bottom: 1px solid var(--line); }
 .about-copy dt { font: 500 10px/1.6 var(--mono); }
 .about-copy dd { margin: 0; font-size: 13px; line-height: 1.6; }
-.contact-panel { margin-top: 140px; min-height: 290px; padding: 40px; border-radius: calc(var(--radius) + 12px); display: grid; grid-template-columns: 1fr auto; align-content: space-between; background: var(--lime); overflow: hidden; }
-.contact-panel span { font-size: 15px; }
-.contact-panel strong { grid-column: 1 / -1; align-self: end; font-size: clamp(44px, 7.7vw, 125px); line-height: .9; letter-spacing: -.075em; white-space: nowrap; }
-.contact-panel i { grid-column: 2; grid-row: 1; position: static; align-self: start; justify-self: end; font-size: 24px; font-style: normal; }
+.contact-panel { margin-top: 140px; padding: 38px; border-radius: calc(var(--radius) + 12px); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(250px, .72fr) minmax(240px, 300px); gap: 26px; align-items: stretch; background: var(--lime); overflow: hidden; scroll-margin-top: 96px; }
+.contact-intro { min-width: 0; padding: 6px 8px 6px 2px; display: flex; flex-direction: column; align-items: flex-start; }
+.contact-kicker { margin: 0 0 36px; font: 500 10px/1.4 var(--mono); letter-spacing: .08em; }
+.contact-intro h2 { margin: 0; font-size: clamp(48px, 5.8vw, 88px); line-height: .93; letter-spacing: -.07em; }
+.contact-intro > p:not(.contact-kicker) { max-width: 480px; margin: 24px 0 30px; color: rgba(17,17,15,.7); font-size: 13px; line-height: 1.8; }
+.contact-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 10px; }
+.contact-action { min-height: 46px; padding: 13px 17px; display: inline-flex; align-items: center; gap: 18px; border: 1px solid rgba(17,17,15,.24); border-radius: 999px; font-size: 12px; font-weight: 600; }
+.contact-action-primary { border-color: var(--ink); background: var(--ink); color: #fff; }
+.contact-action-primary span { color: var(--lime); }
+.contact-details { min-width: 0; display: grid; align-content: stretch; border: 1px solid rgba(17,17,15,.18); border-radius: 26px; background: rgba(255,255,255,.28); overflow: hidden; }
+.contact-item { position: relative; min-width: 0; padding: 22px; display: grid; align-content: center; gap: 8px; border-bottom: 1px solid rgba(17,17,15,.16); }
+.contact-item:last-child { border-bottom: 0; }
+.contact-item-action { padding-right: 82px; }
+.contact-label { color: rgba(17,17,15,.55); font: 500 9px/1.4 var(--mono); letter-spacing: .08em; }
+.contact-value { min-width: 0; font-size: 16px; line-height: 1.45; font-weight: 700; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.copy-button { position: absolute; top: 50%; right: 16px; transform: translateY(-50%); min-width: 54px; min-height: 44px; padding: 0 12px; border: 1px solid rgba(17,17,15,.2); border-radius: 999px; background: rgba(255,255,255,.62); font-size: 11px; font-weight: 600; cursor: pointer; }
+.wechat-card { min-width: 0; margin: 0; padding: 14px; display: flex; flex-direction: column; justify-content: center; border-radius: 26px; background: #fff; }
+.wechat-card img { width: 100%; height: auto; max-height: 340px; object-fit: contain; border-radius: 18px; }
+.wechat-card figcaption { padding: 12px 6px 4px; display: grid; gap: 4px; text-align: center; }
+.wechat-card figcaption strong { font-size: 13px; }
+.wechat-card figcaption span { color: var(--muted); font-size: 10px; }
+.copy-toast { position: fixed; z-index: 50; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); transform: translate(-50%, 18px); padding: 12px 18px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 12px; box-shadow: 0 14px 34px rgba(0,0,0,.22); opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; }
+.copy-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.copy-toast.is-error { background: #8f2d14; }
 
 footer { padding: 28px max(5vw, 28px); display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 28px; font: 500 10px/1.5 var(--mono); border-top: 1px solid var(--line); }
 
@@ -195,6 +222,9 @@ dialog::backdrop { background: rgba(10,10,9,.76); backdrop-filter: blur(8px); }
   .dialog-layout { grid-template-columns: 1fr; height: calc(100dvh - 24px); max-height: none; overflow-y: auto; overscroll-behavior: contain; }
   .dialog-media { min-height: 0; aspect-ratio: 16 / 9; }
   .dialog-copy { overflow: visible; }
+  .contact-panel { grid-template-columns: minmax(0, 1fr) minmax(230px, 280px); }
+  .contact-intro, .contact-details { grid-column: 1; }
+  .wechat-card { grid-column: 2; grid-row: 1 / span 2; align-self: stretch; }
   footer { grid-template-columns: 1fr 1fr; }
 }
 
@@ -217,9 +247,13 @@ dialog::backdrop { background: rgba(10,10,9,.76); backdrop-filter: blur(8px); }
   .hero-statement .kicker { font-size: 9px; letter-spacing: .055em; white-space: normal; }
   .kicker::before { width: 24px; margin-right: 8px; }
   .hero-statement h1 { margin-top: 18px; gap: 4px; font-size: clamp(42px, 12vw, 50px); line-height: .98; letter-spacing: -.055em; }
+  .hero-positioning { margin-top: 14px; gap: 4px; font-size: 13px; line-height: 1.45; }
+  .hero-positioning span { font-size: 9px; line-height: 1.5; }
   .hero-card { left: 16px; right: 16px; bottom: 22px; width: auto; min-height: 176px; padding: 20px; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; border-radius: 24px; }
   .hero-card-mark { grid-column: 2; grid-row: 1 / span 2; width: 54px; border-width: 2px; border-radius: 16px; font-size: 20px; }
-  .hero-card p { grid-column: 1; grid-row: 1 / 3; max-width: 230px; margin: 0; padding-right: 16px; font-size: 12px; line-height: 1.7; }
+  .hero-card p { grid-column: 1; grid-row: 1 / 3; max-width: 240px; margin: 0; padding-right: 14px; }
+  .hero-card p strong { font-size: 12px; line-height: 1.5; }
+  .hero-card p span { margin-top: 5px; font-size: 9px; line-height: 1.5; }
   .hero-card > a { grid-column: 1 / -1; margin-top: 16px; padding: 12px 14px; }
   .hero-year, .hero-scroll { display: none; }
   .manifesto, .archive, .about { padding: 104px 18px; }
@@ -258,8 +292,19 @@ dialog::backdrop { background: rgba(10,10,9,.76); backdrop-filter: blur(8px); }
   .about h2 { font-size: clamp(40px, 12vw, 50px); line-height: 1.08; letter-spacing: -.055em; }
   .about-copy .about-lead { font-size: 18px; }
   .about-copy dl div { grid-template-columns: 72px 1fr; }
-  .contact-panel { margin-top: 96px; min-height: 240px; padding: 24px; }
-  .contact-panel strong { white-space: normal; font-size: 13vw; line-height: .98; }
+  .contact-panel { margin-top: 96px; padding: 24px 18px 20px; grid-template-columns: 1fr; gap: 18px; border-radius: 28px; }
+  .contact-intro, .contact-details, .wechat-card { grid-column: 1; grid-row: auto; }
+  .contact-intro { padding: 2px 2px 10px; }
+  .contact-kicker { margin-bottom: 24px; }
+  .contact-intro h2 { font-size: clamp(44px, 14vw, 58px); line-height: .98; }
+  .contact-intro > p:not(.contact-kicker) { margin: 18px 0 24px; font-size: 12px; }
+  .contact-actions { width: 100%; display: grid; grid-template-columns: 1fr; }
+  .contact-action { width: 100%; justify-content: space-between; }
+  .contact-item { padding: 20px 18px; }
+  .contact-item-action { padding-right: 80px; }
+  .contact-value { font-size: 15px; }
+  .wechat-card { width: min(100%, 300px); justify-self: center; padding: 12px; }
+  .wechat-card img { max-height: none; }
   footer { padding: 24px 18px; grid-template-columns: 1fr; gap: 8px; }
   dialog { width: calc(100% - 12px); max-height: calc(100dvh - 12px); border-radius: 22px; }
   .dialog-layout { height: calc(100dvh - 12px); max-height: none; padding-bottom: env(safe-area-inset-bottom); overflow-y: auto; }

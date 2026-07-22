@@ -6,6 +6,8 @@ const dialog = document.querySelector("#project-dialog");
 const dialogMedia = document.querySelector("#dialog-media");
 const closeButton = document.querySelector(".dialog-close");
 const directoryLinks = [...document.querySelectorAll("[data-directory-filter]")];
+const copyButtons = [...document.querySelectorAll("[data-copy-value]")];
+const copyToast = document.querySelector("#copy-toast");
 const categoryLabels = {
   AIGC: "AIGC",
   "实拍": "实拍 + AE",
@@ -16,8 +18,9 @@ const featuredTitles = ["把风夹在身边", "多米拉 S1 烤箱", "AI 校园�
 const featuredProjects = featuredTitles
   .map((title) => projects.find((project) => project.title === title))
   .filter(Boolean);
-const archiveProjects = projects.filter((project) => !featuredTitles.includes(project.title));
-const orderedProjects = [...featuredProjects, ...archiveProjects];
+const remainingProjects = projects.filter((project) => !featuredTitles.includes(project.title));
+const orderedProjects = [...featuredProjects, ...remainingProjects];
+const archiveProjects = orderedProjects;
 document.querySelector("#count-all").textContent = archiveProjects.length;
 
 const escapeHTML = (value = "") => String(value).replace(/[&<>'"]/g, (character) => ({
@@ -31,6 +34,7 @@ function openProject(project, index) {
   document.querySelector("#dialog-meta").textContent = `${displayCategory(project.category)} · ${project.year} · ${project.duration}`;
   document.querySelector("#dialog-title").textContent = project.title;
   document.querySelector("#dialog-description").textContent = project.description;
+  document.querySelector("#dialog-role").textContent = "全流程独立完成";
   document.querySelector("#dialog-problem").textContent = project.problem;
   document.querySelector("#dialog-deliverable").textContent = project.deliverable;
 
@@ -69,7 +73,7 @@ function renderFeatured() {
       <div class="feature-case-copy">
         <h3>${escapeHTML(project.title)}</h3>
         <p>${escapeHTML(project.description)}</p>
-        <div class="feature-case-foot"><span>${escapeHTML(project.deliverable.split(" / ")[0])}</span><b>↗</b></div>
+        <div class="feature-case-foot"><span>${escapeHTML(project.deliverable.split(" / ")[0])}</span><span class="independent-badge">独立完成</span><b>↗</b></div>
       </div>`, project, index, "feature-case reveal");
     featuredRoot.appendChild(card);
   });
@@ -84,7 +88,7 @@ function renderArchive(filter = "all") {
       <div class="project-cover"><img src="${escapeHTML(project.cover)}" alt="${escapeHTML(project.title)}视频封面" loading="lazy"><span class="project-arrow">↗</span></div>
       <div class="project-card-body">
         <h3>${escapeHTML(project.title)}</h3>
-        <p class="project-meta">${escapeHTML(displayCategory(project.category))} · ${escapeHTML(project.duration)}</p>
+        <p class="project-meta">${escapeHTML(displayCategory(project.category))} · 独立完成 · ${escapeHTML(project.duration)}</p>
         <p>${escapeHTML(summary(project.description))}</p>
       </div>`, project, index, "project-card reveal");
     archiveRoot.appendChild(card);
@@ -106,6 +110,46 @@ filters.forEach((button) => button.addEventListener("click", () => activateFilte
 directoryLinks.forEach((link) => link.addEventListener("click", () => {
   const target = filters.find((button) => button.dataset.filter === link.dataset.directoryFilter);
   if (target) activateFilter(target);
+}));
+
+function fallbackCopy(value) {
+  const textarea = document.createElement("textarea");
+  textarea.value = value;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand("copy");
+  textarea.remove();
+  if (!copied) throw new Error("Copy failed");
+}
+
+async function copyValue(value) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+  fallbackCopy(value);
+}
+
+let toastTimer;
+function showCopyToast(message, isError = false) {
+  if (!copyToast) return;
+  window.clearTimeout(toastTimer);
+  copyToast.textContent = message;
+  copyToast.classList.toggle("is-error", isError);
+  copyToast.classList.add("is-visible");
+  toastTimer = window.setTimeout(() => copyToast.classList.remove("is-visible"), 2200);
+}
+
+copyButtons.forEach((button) => button.addEventListener("click", async () => {
+  try {
+    await copyValue(button.dataset.copyValue);
+    showCopyToast(`已复制${button.dataset.copyLabel}`);
+  } catch {
+    showCopyToast(`复制失败，请长按${button.dataset.copyLabel}`, true);
+  }
 }));
 
 function closeDialog() {
