@@ -1,45 +1,125 @@
-const grid = document.querySelector('#work-grid');
-const search = document.querySelector('#search');
-const empty = document.querySelector('#empty-state');
-const count = document.querySelector('#work-count');
-const dialog = document.querySelector('#project-dialog');
-let category = 'all';
+const featuredRoot = document.querySelector("#featured-cases");
+const archiveRoot = document.querySelector("#archive-grid");
+const emptyState = document.querySelector("#empty-state");
+const filters = [...document.querySelectorAll(".filter")];
+const dialog = document.querySelector("#project-dialog");
+const dialogMedia = document.querySelector("#dialog-media");
+const closeButton = document.querySelector(".dialog-close");
 
-function visibleProjects() {
-  const term = search.value.trim().toLowerCase();
-  return projects.filter(p => (category === 'all' || p.category === category) && `${p.title} ${p.category} ${p.year}`.toLowerCase().includes(term));
-}
-function render() {
-  const items = visibleProjects();
-  count.textContent = `(${items.length.toString().padStart(2, '0')})`;
-  empty.hidden = !!items.length;
-  grid.innerHTML = items.map((p, i) => `<article class="project-card" tabindex="0" data-index="${projects.indexOf(p)}" aria-label="观看：${p.title}"><div class="card-image"><img src="${p.cover}" alt="${p.title}" loading="${i > 1 ? 'lazy' : 'eager'}" /><span class="play">▶</span></div><div class="card-info"><p class="case-index">CASE ${(i + 1).toString().padStart(2, '0')} / ${p.category.toUpperCase()}</p><h3>${p.title}</h3><p class="case-summary">${p.description}</p><dl class="case-details"><div><dt>解决什么</dt><dd>${p.problem}</dd></div><div><dt>交付内容</dt><dd>${p.deliverable}</dd></div></dl><span class="case-watch">播放案例 <b>${p.duration}</b> <i>↗</i></span></div></article>`).join('');
-  const reveal = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); reveal.unobserve(entry.target); } }), { threshold: .12 });
-  grid.querySelectorAll('.project-card').forEach(card => reveal.observe(card));
-}
-function getEmbed(url) {
-  if (/youtube\.com|youtu\.be/.test(url)) { const id = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/)?.[1]; return id ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1" title="视频播放器" allow="autoplay; fullscreen" allowfullscreen></iframe>` : ''; }
-  if (/vimeo\.com/.test(url)) { const id = url.match(/vimeo\.com\/(\d+)/)?.[1]; return id ? `<iframe src="https://player.vimeo.com/video/${id}?autoplay=1" title="视频播放器" allow="autoplay; fullscreen" allowfullscreen></iframe>` : ''; }
-  return '';
-}
-function openProject(index) {
-  const p = projects[index];
-  document.querySelector('#dialog-title').textContent = p.title;
-  document.querySelector('#dialog-meta').textContent = `${p.category} / ${p.year} / ${p.duration}`;
-  document.querySelector('#dialog-description').textContent = p.description;
-  const media = document.querySelector('#dialog-media');
-  const embed = p.src && getEmbed(p.src);
-  media.innerHTML = embed || (p.src ? `<video controls playsinline preload="metadata" poster="${p.cover}" src="${p.src}"></video>` : `<img src="${p.cover}" alt="${p.title}" />`);
-  const link = document.querySelector('#watch-link');
-  link.href = p.src || '#'; link.style.display = p.src ? 'inline-flex' : 'none';
+const escapeHTML = (value = "") => String(value).replace(/[&<>'"]/g, (character) => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
+})[character]);
+
+const summary = (value, limit = 76) => value.length > limit ? `${value.slice(0, limit)}…` : value;
+
+function openProject(project, index) {
+  document.querySelector("#dialog-index").textContent = `CASE ${String(index + 1).padStart(2, "0")} / 11`;
+  document.querySelector("#dialog-meta").textContent = `${project.category} · ${project.year} · ${project.duration}`;
+  document.querySelector("#dialog-title").textContent = project.title;
+  document.querySelector("#dialog-description").textContent = project.description;
+  document.querySelector("#dialog-problem").textContent = project.problem;
+  document.querySelector("#dialog-deliverable").textContent = project.deliverable;
+
+  const poster = escapeHTML(project.cover);
+  const source = escapeHTML(project.src);
+  dialogMedia.innerHTML = `<video controls playsinline preload="metadata" poster="${poster}"><source src="${source}" type="video/mp4">你的浏览器暂不支持视频播放。</video>`;
+  const watchLink = document.querySelector("#watch-link");
+  watchLink.href = project.src;
   dialog.showModal();
+  document.body.classList.add("modal-open");
 }
-document.querySelectorAll('.filter').forEach(button => button.addEventListener('click', () => { category = button.dataset.filter; document.querySelector('.filter.active').classList.remove('active'); button.classList.add('active'); render(); }));
-search.addEventListener('input', render);
-grid.addEventListener('click', event => { const card = event.target.closest('.project-card'); if (card) openProject(card.dataset.index); });
-grid.addEventListener('keydown', event => { if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('.project-card')) { event.preventDefault(); openProject(event.target.dataset.index); } });
-document.querySelector('.close').addEventListener('click', () => dialog.close());
-dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-dialog.addEventListener('close', () => document.querySelector('#dialog-media').innerHTML = '');
-document.querySelector('#year').textContent = new Date().getFullYear();
-render();
+
+function projectButton(content, project, index, className) {
+  const button = document.createElement("article");
+  button.className = className;
+  button.tabIndex = 0;
+  button.setAttribute("role", "button");
+  button.setAttribute("aria-label", `查看案例：${project.title}`);
+  button.innerHTML = content;
+  button.addEventListener("click", () => openProject(project, index));
+  button.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openProject(project, index);
+    }
+  });
+  return button;
+}
+
+function renderFeatured() {
+  featuredRoot.innerHTML = "";
+  projects.slice(0, 3).forEach((project, index) => {
+    const card = projectButton(`
+      <div class="feature-case-head"><span>CASE ${String(index + 1).padStart(2, "0")}</span><span>${escapeHTML(project.category)} / ${escapeHTML(project.duration)}</span></div>
+      <div class="feature-case-copy">
+        <h3>${escapeHTML(project.title)}</h3>
+        <p>${escapeHTML(project.description)}</p>
+        <div class="feature-case-foot"><span>${escapeHTML(project.deliverable.split(" / ")[0])}</span><b>↗</b></div>
+      </div>`, project, index, "feature-case reveal");
+    card.style.setProperty("--cover", `url("${project.cover}")`);
+    featuredRoot.appendChild(card);
+  });
+}
+
+function renderArchive(filter = "all") {
+  const visible = filter === "all" ? projects.slice(3) : projects.filter((project) => project.category === filter);
+  archiveRoot.innerHTML = "";
+  visible.forEach((project) => {
+    const index = projects.indexOf(project);
+    const card = projectButton(`
+      <div class="project-cover"><img src="${escapeHTML(project.cover)}" alt="${escapeHTML(project.title)}视频封面" loading="lazy"><span class="project-arrow">↗</span></div>
+      <div class="project-card-body">
+        <h3>${escapeHTML(project.title)}</h3>
+        <p class="project-meta">${escapeHTML(project.category)} · ${escapeHTML(project.duration)}</p>
+        <p>${escapeHTML(summary(project.description))}</p>
+      </div>`, project, index, "project-card reveal");
+    archiveRoot.appendChild(card);
+  });
+  emptyState.hidden = visible.length > 0;
+  observeReveals();
+}
+
+filters.forEach((button) => button.addEventListener("click", () => {
+  filters.forEach((item) => item.classList.toggle("active", item === button));
+  renderArchive(button.dataset.filter);
+}));
+
+function closeDialog() {
+  const video = dialogMedia.querySelector("video");
+  if (video) video.pause();
+  dialog.close();
+  dialogMedia.innerHTML = "";
+  document.body.classList.remove("modal-open");
+}
+
+closeButton.addEventListener("click", closeDialog);
+dialog.addEventListener("click", (event) => {
+  if (event.target === dialog) closeDialog();
+});
+dialog.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  closeDialog();
+});
+
+let observer;
+function observeReveals() {
+  if (!observer) {
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+  }
+  document.querySelectorAll(".reveal:not(.in-view)").forEach((element) => observer.observe(element));
+}
+
+window.addEventListener("scroll", () => {
+  document.querySelector(".site-header").classList.toggle("scrolled", window.scrollY > 24);
+}, { passive: true });
+
+renderFeatured();
+renderArchive();
+observeReveals();
