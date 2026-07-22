@@ -5,6 +5,13 @@ const filters = [...document.querySelectorAll(".filter")];
 const dialog = document.querySelector("#project-dialog");
 const dialogMedia = document.querySelector("#dialog-media");
 const closeButton = document.querySelector(".dialog-close");
+const featuredTitles = ["把风夹在身边", "多米拉 S1 烤箱", "AI 校园宣传片"];
+const featuredProjects = featuredTitles
+  .map((title) => projects.find((project) => project.title === title))
+  .filter(Boolean);
+const archiveProjects = projects.filter((project) => !featuredTitles.includes(project.title));
+const orderedProjects = [...featuredProjects, ...archiveProjects];
+document.querySelector("#count-all").textContent = archiveProjects.length;
 
 const escapeHTML = (value = "") => String(value).replace(/[&<>'"]/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
@@ -13,7 +20,7 @@ const escapeHTML = (value = "") => String(value).replace(/[&<>'"]/g, (character)
 const summary = (value, limit = 76) => value.length > limit ? `${value.slice(0, limit)}…` : value;
 
 function openProject(project, index) {
-  document.querySelector("#dialog-index").textContent = `CASE ${String(index + 1).padStart(2, "0")} / 11`;
+  document.querySelector("#dialog-index").textContent = `CASE ${String(index + 1).padStart(2, "0")} / ${String(orderedProjects.length).padStart(2, "0")}`;
   document.querySelector("#dialog-meta").textContent = `${project.category} · ${project.year} · ${project.duration}`;
   document.querySelector("#dialog-title").textContent = project.title;
   document.querySelector("#dialog-description").textContent = project.description;
@@ -48,24 +55,24 @@ function projectButton(content, project, index, className) {
 
 function renderFeatured() {
   featuredRoot.innerHTML = "";
-  projects.slice(0, 3).forEach((project, index) => {
+  featuredProjects.forEach((project, index) => {
     const card = projectButton(`
+      <div class="feature-case-media"><img src="${escapeHTML(project.cover)}" alt="${escapeHTML(project.title)}视频封面"></div>
       <div class="feature-case-head"><span>CASE ${String(index + 1).padStart(2, "0")}</span><span>${escapeHTML(project.category)} / ${escapeHTML(project.duration)}</span></div>
       <div class="feature-case-copy">
         <h3>${escapeHTML(project.title)}</h3>
         <p>${escapeHTML(project.description)}</p>
         <div class="feature-case-foot"><span>${escapeHTML(project.deliverable.split(" / ")[0])}</span><b>↗</b></div>
       </div>`, project, index, "feature-case reveal");
-    card.style.setProperty("--cover", `url("${project.cover}")`);
     featuredRoot.appendChild(card);
   });
 }
 
 function renderArchive(filter = "all") {
-  const visible = filter === "all" ? projects.slice(3) : projects.filter((project) => project.category === filter);
+  const visible = filter === "all" ? archiveProjects : archiveProjects.filter((project) => project.category === filter);
   archiveRoot.innerHTML = "";
   visible.forEach((project) => {
-    const index = projects.indexOf(project);
+    const index = orderedProjects.indexOf(project);
     const card = projectButton(`
       <div class="project-cover"><img src="${escapeHTML(project.cover)}" alt="${escapeHTML(project.title)}视频封面" loading="lazy"><span class="project-arrow">↗</span></div>
       <div class="project-card-body">
