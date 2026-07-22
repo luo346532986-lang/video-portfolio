@@ -67,15 +67,24 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible { outline: 
 
 .manifesto { padding: 150px max(5vw, 28px); background: var(--ink); color: var(--paper); }
 .manifesto .section-index { color: #9d9b94; }
-.manifesto h2 { max-width: 1180px; margin: 60px 0 110px; font-size: clamp(48px, 6.6vw, 108px); line-height: 1.08; letter-spacing: -.06em; font-weight: 700; }
-.manifesto h2 span { color: var(--lime); }
-.manifesto-flow { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,.22); }
-.manifesto-flow article { min-height: 240px; padding: 26px 34px 20px 0; border-right: 1px solid rgba(255,255,255,.22); }
-.manifesto-flow article + article { padding-left: 34px; }
-.manifesto-flow article:last-child { border-right: 0; }
-.manifesto-flow i { font: normal 11px/1 var(--mono); color: var(--lime); }
-.manifesto-flow h3 { margin: 62px 0 12px; font-size: 25px; letter-spacing: -.04em; }
-.manifesto-flow p { max-width: 290px; margin: 0; color: #aaa8a1; font-size: 14px; line-height: 1.8; }
+.directory-heading { margin: 58px 0 92px; display: grid; grid-template-columns: 1.4fr .6fr; gap: 48px; align-items: end; }
+.directory-heading h2 { margin: 0; font-size: clamp(64px, 8.5vw, 138px); line-height: .9; letter-spacing: -.075em; font-weight: 700; }
+.directory-heading p { max-width: 330px; margin: 0 0 8px; color: #aaa8a1; font-size: 14px; line-height: 1.8; }
+.directory-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid rgba(255,255,255,.22); border-bottom: 1px solid rgba(255,255,255,.22); }
+.directory-item { position: relative; min-height: 330px; padding: 28px 34px 30px 0; display: grid; grid-template-columns: auto 1fr auto; grid-template-rows: auto 1fr auto auto; gap: 0 16px; border-right: 1px solid rgba(255,255,255,.22); transition: padding .35s ease, background .35s ease, color .35s ease; }
+.directory-item + .directory-item { padding-left: 34px; }
+.directory-item:last-child { border-right: 0; }
+.directory-item i, .directory-item span, .directory-item small { font: normal 10px/1.4 var(--mono); letter-spacing: .06em; }
+.directory-item i { color: var(--lime); }
+.directory-item span { color: #7f7e78; }
+.directory-item b { justify-self: end; font-size: 21px; font-weight: 400; transition: transform .35s ease; }
+.directory-item h3 { grid-column: 1 / -1; align-self: end; margin: 0 0 18px; font-size: clamp(30px, 2.5vw, 42px); line-height: 1; letter-spacing: -.055em; }
+.directory-item p { grid-column: 1 / -1; max-width: 310px; margin: 0 0 32px; color: #aaa8a1; font-size: 13px; line-height: 1.75; }
+.directory-item small { grid-column: 1 / -1; color: var(--paper); }
+.directory-item:hover { padding-left: 24px; padding-right: 24px; background: var(--lime); color: var(--ink); }
+.directory-item:hover span, .directory-item:hover p { color: rgba(17,17,15,.62); }
+.directory-item:hover i, .directory-item:hover small { color: var(--ink); }
+.directory-item:hover b { transform: translate(4px,4px); }
 
 .selected { padding: 150px max(3.2vw, 22px) 80px; }
 .selected-heading { padding: 0 2vw 90px; display: grid; grid-template-columns: 1fr 2fr; align-items: end; }
@@ -173,9 +182,11 @@ dialog::backdrop { background: rgba(10,10,9,.76); backdrop-filter: blur(8px); }
   .hero-card { display: none; }
   .hero-year { left: auto; right: 24px; bottom: 28px; transform: none; }
   .hero-scroll { display: none; }
-  .manifesto-flow { grid-template-columns: 1fr; }
-  .manifesto-flow article, .manifesto-flow article + article { min-height: 180px; padding: 26px 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
-  .manifesto-flow h3 { margin-top: 38px; }
+  .directory-heading { grid-template-columns: 1fr; gap: 28px; }
+  .directory-grid { grid-template-columns: 1fr; }
+  .directory-item, .directory-item + .directory-item { min-height: 250px; padding: 26px 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
+  .directory-item:last-child { border-bottom: 0; }
+  .directory-item:hover { padding-left: 20px; padding-right: 20px; }
   .selected-heading, .archive-heading, .about-grid { grid-template-columns: 1fr; gap: 34px; }
   .selected-heading { padding-bottom: 54px; }
   .feature-case { min-height: 0; }
@@ -212,9 +223,12 @@ dialog::backdrop { background: rgba(10,10,9,.76); backdrop-filter: blur(8px); }
   .hero-card > a { grid-column: 1 / -1; margin-top: 16px; padding: 12px 14px; }
   .hero-year, .hero-scroll { display: none; }
   .manifesto, .archive, .about { padding: 104px 18px; }
-  .manifesto h2 { margin: 52px 0 78px; font-size: 10.5vw; line-height: 1.14; letter-spacing: -.045em; }
-  .manifesto-flow article, .manifesto-flow article + article { min-height: 0; padding: 28px 0 32px; }
-  .manifesto-flow h3 { margin-top: 34px; font-size: 23px; }
+  .directory-heading { margin: 48px 0 62px; gap: 24px; }
+  .directory-heading h2 { font-size: clamp(54px, 17vw, 72px); line-height: .94; }
+  .directory-heading p { font-size: 13px; }
+  .directory-item, .directory-item + .directory-item { min-height: 238px; padding: 24px 0 26px; }
+  .directory-item h3 { margin-bottom: 14px; font-size: 32px; }
+  .directory-item p { margin-bottom: 26px; font-size: 12px; }
   .selected { padding: 108px 10px 62px; }
   .selected-heading { padding: 0 8px 58px; gap: 42px; }
   .selected-heading h2 { font-size: clamp(38px, 11.5vw, 48px); line-height: 1.1; letter-spacing: -.05em; }

@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="experience.css?v=20260722-v4" />
+    <link rel="stylesheet" href="experience.css?v=20260722-v5" />
   </head>
   <body>
     <header class="site-header">
@@ -42,7 +42,7 @@
 
         <div class="hero-statement reveal">
           <p class="kicker">YOUR PRODUCT BROUGHT TO LIFE</p>
-          <h1 id="hero-title"><span>让产品被看见</span><em>更被记住</em></h1>
+          <h1 id="hero-title"><span>Lenox 作品集</span><em>Portfolio</em></h1>
         </div>
 
         <aside class="hero-card reveal">
@@ -52,17 +52,35 @@
         </aside>
 
         <small class="hero-year">© 2026 LENNOX</small>
-        <a class="hero-scroll" href="#method">SCROLL DOWN ↓</a>
+        <a class="hero-scroll" href="#directory">SCROLL DOWN ↓</a>
       </section>
 
-      <section class="manifesto" id="method" aria-labelledby="manifesto-title">
-        <p class="section-index">01 / HOW I THINK</p>
-        <h2 id="manifesto-title" class="reveal">不只把视频做漂亮<br />更让内容替产品<span>解决问题</span></h2>
-        <div class="manifesto-flow reveal">
-          <article><i>01</i><h3>看懂产品</h3><p>提炼真正影响购买判断的卖点，而不是堆参数。</p></article>
-          <article><i>02</i><h3>组织表达</h3><p>用脚本、画面与声音，把信息变成可感知的体验。</p></article>
-          <article><i>03</i><h3>稳定交付</h3><p>连接实拍、AIGC 与工作流，让内容持续生产。</p></article>
+      <section class="manifesto directory" id="directory" aria-labelledby="directory-title">
+        <p class="section-index">01 / DIRECTORY</p>
+        <div class="directory-heading reveal">
+          <h2 id="directory-title">作品目录</h2>
+          <p>根据你最想了解的内容，直接进入对应章节。</p>
         </div>
+        <nav class="directory-grid reveal" aria-label="作品集目录">
+          <a class="directory-item" href="#archive" data-directory-filter="AIGC">
+            <i>01</i><span>AI CONTENT</span><b>↘</b>
+            <h3>AIGC</h3>
+            <p>AI 叙事短片、品牌内容与产品概念视觉</p>
+            <small>AI CONTENT PRODUCTION</small>
+          </a>
+          <a class="directory-item" href="#archive" data-directory-filter="实拍">
+            <i>02</i><span>LIVE ACTION + MOTION</span><b>↘</b>
+            <h3>实拍 + AE</h3>
+            <p>灯光实拍、产品演示、剪辑与 AE 动效包装</p>
+            <small>LIVE ACTION PRODUCTION</small>
+          </a>
+          <a class="directory-item" href="#archive" data-directory-filter="实拍结合 AI">
+            <i>03</i><span>LIVE ACTION + AI</span><b>↘</b>
+            <h3>实拍 + AI</h3>
+            <p>保留真实产品质感，用 AI 扩展场景与表达</p>
+            <small>HYBRID PRODUCTION</small>
+          </a>
+        </nav>
       </section>
 
       <section class="selected" id="selected" aria-labelledby="selected-title">
@@ -81,8 +99,8 @@
         <div class="filter-row" role="group" aria-label="按制作方式筛选">
           <button class="filter active" data-filter="all" aria-pressed="true">全部 <sup id="count-all">8</sup></button>
           <button class="filter" data-filter="AIGC" aria-pressed="false">AIGC</button>
-          <button class="filter" data-filter="实拍" aria-pressed="false">实拍</button>
-          <button class="filter" data-filter="实拍结合 AI" aria-pressed="false">实拍结合 AI</button>
+          <button class="filter" data-filter="实拍" aria-pressed="false">实拍 + AE</button>
+          <button class="filter" data-filter="实拍结合 AI" aria-pressed="false">实拍 + AI</button>
         </div>
         <div class="archive-grid" id="archive-grid" aria-live="polite"></div>
         <p class="empty-state" id="empty-state" hidden>此分类暂无案例。</p>
@@ -136,6 +154,6 @@
     </dialog>
 
     <script src="projects.js?v=20260721-covers2"></script>
-    <script src="script.js?v=20260722-v4"></script>
+    <script src="script.js?v=20260722-v5"></script>
   </body>
 </html>

@@ -5,6 +5,13 @@ const filters = [...document.querySelectorAll(".filter")];
 const dialog = document.querySelector("#project-dialog");
 const dialogMedia = document.querySelector("#dialog-media");
 const closeButton = document.querySelector(".dialog-close");
+const directoryLinks = [...document.querySelectorAll("[data-directory-filter]")];
+const categoryLabels = {
+  AIGC: "AIGC",
+  "实拍": "实拍 + AE",
+  "实拍结合 AI": "实拍 + AI",
+};
+const displayCategory = (category) => categoryLabels[category] || category;
 const featuredTitles = ["把风夹在身边", "多米拉 S1 烤箱", "AI 校园宣传片"];
 const featuredProjects = featuredTitles
   .map((title) => projects.find((project) => project.title === title))
@@ -21,7 +28,7 @@ const summary = (value, limit = 76) => value.length > limit ? `${value.slice(0, 
 
 function openProject(project, index) {
   document.querySelector("#dialog-index").textContent = `CASE ${String(index + 1).padStart(2, "0")} / ${String(orderedProjects.length).padStart(2, "0")}`;
-  document.querySelector("#dialog-meta").textContent = `${project.category} · ${project.year} · ${project.duration}`;
+  document.querySelector("#dialog-meta").textContent = `${displayCategory(project.category)} · ${project.year} · ${project.duration}`;
   document.querySelector("#dialog-title").textContent = project.title;
   document.querySelector("#dialog-description").textContent = project.description;
   document.querySelector("#dialog-problem").textContent = project.problem;
@@ -58,7 +65,7 @@ function renderFeatured() {
   featuredProjects.forEach((project, index) => {
     const card = projectButton(`
       <div class="feature-case-media"><img src="${escapeHTML(project.cover)}" alt="${escapeHTML(project.title)}视频封面"></div>
-      <div class="feature-case-head"><span>CASE ${String(index + 1).padStart(2, "0")}</span><span>${escapeHTML(project.category)} / ${escapeHTML(project.duration)}</span></div>
+      <div class="feature-case-head"><span>CASE ${String(index + 1).padStart(2, "0")}</span><span>${escapeHTML(displayCategory(project.category))} / ${escapeHTML(project.duration)}</span></div>
       <div class="feature-case-copy">
         <h3>${escapeHTML(project.title)}</h3>
         <p>${escapeHTML(project.description)}</p>
@@ -77,7 +84,7 @@ function renderArchive(filter = "all") {
       <div class="project-cover"><img src="${escapeHTML(project.cover)}" alt="${escapeHTML(project.title)}视频封面" loading="lazy"><span class="project-arrow">↗</span></div>
       <div class="project-card-body">
         <h3>${escapeHTML(project.title)}</h3>
-        <p class="project-meta">${escapeHTML(project.category)} · ${escapeHTML(project.duration)}</p>
+        <p class="project-meta">${escapeHTML(displayCategory(project.category))} · ${escapeHTML(project.duration)}</p>
         <p>${escapeHTML(summary(project.description))}</p>
       </div>`, project, index, "project-card reveal");
     archiveRoot.appendChild(card);
@@ -86,13 +93,19 @@ function renderArchive(filter = "all") {
   observeReveals();
 }
 
-filters.forEach((button) => button.addEventListener("click", () => {
+function activateFilter(button) {
   filters.forEach((item) => {
     const isActive = item === button;
     item.classList.toggle("active", isActive);
     item.setAttribute("aria-pressed", String(isActive));
   });
   renderArchive(button.dataset.filter);
+}
+
+filters.forEach((button) => button.addEventListener("click", () => activateFilter(button)));
+directoryLinks.forEach((link) => link.addEventListener("click", () => {
+  const target = filters.find((button) => button.dataset.filter === link.dataset.directoryFilter);
+  if (target) activateFilter(target);
 }));
 
 function closeDialog() {
