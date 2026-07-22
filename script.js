@@ -14,6 +14,8 @@ function render() {
   count.textContent = `(${items.length.toString().padStart(2, '0')})`;
   empty.hidden = !!items.length;
   grid.innerHTML = items.map((p, i) => `<article class="project-card" tabindex="0" data-index="${projects.indexOf(p)}" aria-label="观看：${p.title}"><div class="card-image"><img src="${p.cover}" alt="${p.title}" loading="${i > 1 ? 'lazy' : 'eager'}" /><span class="play">▶</span></div><div class="card-info"><p class="case-index">CASE ${(i + 1).toString().padStart(2, '0')} / ${p.category.toUpperCase()}</p><h3>${p.title}</h3><p class="case-summary">${p.description}</p><dl class="case-details"><div><dt>解决什么</dt><dd>${p.problem}</dd></div><div><dt>交付内容</dt><dd>${p.deliverable}</dd></div></dl><span class="case-watch">播放案例 <b>${p.duration}</b> <i>↗</i></span></div></article>`).join('');
+  const reveal = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); reveal.unobserve(entry.target); } }), { threshold: .12 });
+  grid.querySelectorAll('.project-card').forEach(card => reveal.observe(card));
 }
 function getEmbed(url) {
   if (/youtube\.com|youtu\.be/.test(url)) { const id = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/)?.[1]; return id ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1" title="视频播放器" allow="autoplay; fullscreen" allowfullscreen></iframe>` : ''; }
