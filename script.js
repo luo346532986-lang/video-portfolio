@@ -6,6 +6,7 @@ const dialog = document.querySelector("#project-dialog");
 const dialogMedia = document.querySelector("#dialog-media");
 const closeButton = document.querySelector(".dialog-close");
 const directoryLinks = [...document.querySelectorAll("[data-directory-filter]")];
+const orbitButtons = [...document.querySelectorAll("[data-orbit-project]")];
 const copyButtons = [...document.querySelectorAll("[data-copy-value]")];
 const copyToast = document.querySelector("#copy-toast");
 const categoryLabels = {
@@ -46,6 +47,15 @@ function openProject(project, index) {
   dialog.showModal();
   document.body.classList.add("modal-open");
 }
+
+orbitButtons.forEach((button) => {
+  const project = projects.find((item) => item.title === button.dataset.orbitProject);
+  if (!project) {
+    button.disabled = true;
+    return;
+  }
+  button.addEventListener("click", () => openProject(project, orderedProjects.indexOf(project)));
+});
 
 function projectButton(content, project, index, className) {
   const button = document.createElement("article");
